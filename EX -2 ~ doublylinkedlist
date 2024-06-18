@@ -1,0 +1,138 @@
+PRASANNA R 231701039
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *prev,*next;
+}*first=NULL,*last=NULL;
+struct node *create(){
+    struct node *New=(struct node *)malloc(sizeof(struct node));
+    return New;
+}
+int isempty(){
+    if(first==NULL){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+void start(int a){
+    struct node *New=create();
+    New->data=a;
+    New->prev=NULL;
+    if(isempty()){
+        New->next=NULL;
+        last=New;
+    }else{
+        New->next=first;
+        first->prev=New;
+    }
+    first=New;
+}
+void middle(int b,int p){
+    if(p==1){
+        start(b);
+    }else if(p==count()){
+        end(b);
+    }else if(p>count()){
+        printf("Invalid position.\n");
+        return;
+    }else{
+        struct node *New=create();
+        New->data=b;
+        struct node *temp=first,*tn;
+        for(int i=0;i<p-1;i++){
+            tn=temp;
+            temp=temp->next;
+        }
+        New->prev=tn;
+        New->next=temp;
+        tn->next=New;
+        temp->prev=New;
+    }
+}
+void end(int c){
+    if(isempty()){
+        start(c);
+    }else{
+        struct node *New=create();
+        New->data=c;
+        New->next=NULL;
+        New->prev=last;
+        last->next=New;
+        last=New;
+    }
+}
+void del(int d){
+    if(isempty()){
+        printf("Empty.\n");
+    }else if(d==1){
+        struct node *temp=first;
+        first=temp->next;
+        first->prev=NULL;
+        free(temp);
+    }else if(d==count()){
+        struct node *temp=last;
+        last=temp->prev;
+        last->next=NULL;
+        free(temp);
+    }else if(d>count()){
+        printf("Invalid position.\n");
+        return;
+    }else{
+        struct node *temp=first,*tn,*tp;
+        for(int i=0;i<d-1;i++){
+            tp=temp;
+            temp=temp->next;
+            tn=temp->next;
+        }
+        tp->next=tn;
+        tn->prev=tp;
+        free(temp);
+    }
+}
+void printa(){
+    struct node *temp=first;
+    while(temp!=NULL){
+        printf("%d\n",temp->data);
+        temp=temp->next;
+    }
+    printf("\n");
+}
+void printb(){
+    struct node *temp=last;
+    while(temp!=NULL){
+        printf("%d\n",temp->data);
+        temp=temp->prev;
+    }
+    printf("\n");
+}
+int count(){
+    struct node *temp=first;
+    int c=0;
+    while(temp!=NULL){
+        c++;
+        temp=temp->next;
+    }
+    return c;
+}
+int main()
+{
+    end(42);
+    start(40);
+    start(35);
+    end(45);
+    end(50);
+    middle(41,3);
+    middle(34,1);
+    middle(51,7);
+    middle(444,10);
+    del(1);
+    del(7);
+    del(4);
+    printa();
+    printb();
+    printf("Count: %d\n",count());
+}

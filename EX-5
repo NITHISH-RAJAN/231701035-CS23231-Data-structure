@@ -1,0 +1,49 @@
+PRASANNA R  231701039
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int top=0;char s[100];char out[100];int j=0;
+int prece(char a){
+    if(a=='+'||a=='-') return 1;if(a=='*'||a=='/') return 2;if(a=='^') return 3;if(a=='(') return 0;
+}
+void push(char c){
+    top++;
+    s[top]=c;
+}
+void pop(){
+    if(s[top]!='('){out[j]=s[top];j++;}
+    top--;
+}
+void express(char o){
+    if(o=='('){
+        push(o);
+    }
+    else if(o==')'){
+        while(s[top]!='('){
+            pop();
+        }pop();
+    }else{
+        if(o=='^'){
+            while(prece(o)<prece(s[top])){
+                pop();
+            }
+        }
+        else{while(prece(o)<=prece(s[top])){pop();}}
+        push(o);
+    }
+}
+int main(){
+    char str[100];
+    scanf("%s",str);
+    for(int i=0;i<strlen(str);i++){
+        if(str[i]>='a'&&str[i]<='z'){out[j]=str[i];j++;}
+        else if(str[i]=='+'||str[i]=='-'||str[i]=='*'||str[i]=='/'||str[i]=='^'||str[i]=='('||str[i]==')'){
+            express(str[i]);
+        }
+    }
+    while(top!=0){
+        pop();
+    }
+    printf("\n%s",out);
+}

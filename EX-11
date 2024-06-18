@@ -1,0 +1,101 @@
+PRASANNA R  231701039
+
+DFS:
+
+#include<stdio.h>
+#include<stdlib.h>
+#define Size 7
+int top=-1;
+int S[Size];
+void push(int a){
+    if(top==Size-1){
+        exit(0);
+    }else{
+        top++;
+        S[top]=a;
+    }
+}
+int pop(){
+    if(top==-1){
+        return -1;
+    }
+    int t=S[top];
+    top--;
+    return t;
+}
+int main(){
+    int g[Size][Size]={{0,1,1,0,0,0,0},
+                       {0,0,0,0,0,0,0},
+                       {0,0,0,1,0,1,0},
+                       {1,1,0,0,0,0,1},
+                       {0,1,0,0,0,0,0},
+                       {0,0,0,0,0,0,1},
+                       {0,0,0,0,1,0,0}};
+    int visited[Size]={0};
+    int i=0;
+    while(i>-1 && i<Size){
+        if(visited[i]!=1){
+            visited[i]=1;
+            printf("  %d",i);
+        }
+        for(int j=0;j<Size;j++){
+            if(g[i][j]==1 && visited[j]!=1){
+                push(j);
+            }
+        }
+        i=pop();
+    }
+    printf("\n");
+}
+
+
+BFS:
+
+#include<stdio.h>
+#include<stdlib.h>
+int f=-1,r=-1;
+int Q[100];
+void enq(int a){
+        if(r==99){
+                printf("Overflow\n");
+                exit(0);
+        }else{
+                if(f==-1) f=0;
+                r++;
+                Q[r]=a;
+        }
+}
+int deq(){
+        if(f>r||f==-1){
+            f=-1;r=-1;
+            return -1;
+        }else{
+            int del=Q[f];
+            f++;
+            return del;
+        }
+}
+int main(){
+        int g[7][7]={{0,1,1,0,0,0,0},
+                     {0,0,0,0,0,0,0},
+                     {0,0,0,1,0,1,0},
+                     {1,1,0,0,0,0,1},
+                     {0,1,0,0,0,0,1},
+                     {0,0,0,0,0,0,1},
+                     {0,0,0,0,1,0,0}};
+        int visited[7]={0};
+        int i=0;
+        while(i>-1 && i<7){
+                if(visited[i]!=1){
+                        visited[i]=1;
+                        printf(" %d ",i);
+                }
+                for(int j=0;j<7;j++){
+                        if(g[i][j]==1&&visited[j]!=1){
+                                enq(j);
+                        }
+                }
+                i=deq();
+        }
+        printf("\n");
+}

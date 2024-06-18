@@ -1,0 +1,105 @@
+PRASANNA R  231701039
+
+ARRAY:
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define size 10
+int que[size];int f=-1,r=-1;
+int isfull(){
+    if(r==size-1) return 1;else return 0;
+}
+int isempty(){
+    if(f==-1) return 1;else return 0;
+}
+void enque(int val){
+    if(isfull()){
+        printf("Overflow\n");
+    }else{
+        if(f==-1){f=0;}
+        r++;
+        que[r]=val;
+    }
+}
+int deque(){
+    int data;
+    if(isempty()){
+        printf("Underflow\n");
+        return NULL;
+    }else{
+        data=que[f];
+        f++;
+        if(f==r){f=-1;r=-1;}
+    }
+    return data;
+}
+void display(){
+    if(isempty()){
+        printf("Underflow\n");
+    }else{
+        int t=f;
+        while(t!=r+1){
+            printf("    %d\n",que[t]);
+            t++;
+        }
+    }
+}
+int main(){
+    deque();
+    enque(10);
+    enque(20);
+    enque(30);
+    printf("%d\n",deque());
+    display();
+}
+
+LINKED LIST:
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct node{
+    int data;
+    struct node *link;
+}*f=NULL,*r=NULL;
+struct node *create(){
+    struct node *New=(struct node *)malloc(sizeof(struct node));
+    return New;
+};
+void enque(int val){
+    struct node *New=create();
+    New->data=val;
+    New->link=NULL;
+    if(f==NULL){f=New;}
+    if(r==NULL){
+        r=New;
+    }else{
+        r->link=New;
+        r=New;
+    }
+}
+int deque(){
+    if(f==NULL){printf("Underflow\n");return -1;}
+    else{
+        int data=f->data;
+        struct node *temp=f;
+        f=f->link;
+        free(temp);
+        if(f==NULL){r==NULL;}
+        return data;
+    }
+}
+void display(){
+    struct node *t=f;
+    while(t!=NULL){
+        printf("    %d\n",t->data);
+        t=t->link;
+    }
+}
+int main(){
+    deque();
+    enque(10);
+    enque(15);
+    enque(20);
+    printf("%d\n",deque());
+    display();
+}

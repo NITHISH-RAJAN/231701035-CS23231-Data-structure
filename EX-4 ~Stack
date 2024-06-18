@@ -1,0 +1,85 @@
+PRAASANNA R 231701039
+
+Stack
+using array
+#include <stdio.h>
+#include <stdlib.h>
+#define size 5
+int top=-1;
+int s[size];
+void push(int a){
+	if(top==size-1) printf("Overflow\n");
+	else{
+		top+=1;
+		s[top]=a;
+	}}
+int pop(){
+	int b;
+	if(top==-1){
+		printf("Empty\n");
+		exit;
+	}else{
+		b=s[top];
+		top-=1;
+		return b;
+	}
+}
+int main(){
+	push(10);
+	push(20);
+	push(30);
+	push(40);
+	push(50);
+	printf("%d\n",pop());
+	display();
+}
+
+using linked list
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node *link;
+}*first=NULL;
+struct node *create(){
+    struct node *New=(struct node *)malloc(sizeof(struct node));
+    return New;
+}
+void push(int a){
+    struct node *New=create();
+    New->data=a;
+    New->link=first;
+    first=New;
+}
+int pop(){
+    if(first==NULL){
+        printf("Empty\n");
+        exit;
+    }else{
+        int t=first->data;
+        struct node *temp=first;
+        first=first->link;
+        free(temp);
+        return t;
+    }
+}
+void display(){
+    if(first==NULL){
+        printf("Empty\n");
+        return;
+    }else{
+        struct node *temp=first;
+        while(temp!=NULL){
+            printf("%d\n",temp->data);
+            temp=temp->link;
+        }
+    }
+}
+int main(){
+    pop();
+    push(10);
+    push(20);
+    push(30);
+    printf("%d\n",pop());
+    display();
+}

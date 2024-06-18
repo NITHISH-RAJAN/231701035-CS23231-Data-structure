@@ -1,0 +1,43 @@
+PRASANNA R  231701039
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int top=-1;int s[100];char str[100];
+void push(int a){
+    top++;
+    s[top]=a;
+}
+int pop(){
+    int b=s[top];
+    top--;
+    return b;
+}
+int evaluate(){
+    int val;
+    for(int i=0;str[i]!='\0';i++){
+        if(str[i]>='a'&&str[i]<='z'){
+            printf("Enter value of %c: ",str[i]);
+            scanf("%d",&val);
+            push(val);
+        }else{
+            int x=pop();
+            int y=pop();
+            switch(str[i]){
+            case '+':
+                push(x+y);break;
+            case '-':
+                push(y-x);break;
+            case '*':
+                push(x*y);break;
+            case '/':
+                push(y/x);break;
+            }
+        }
+    }
+    return pop();
+}
+int main(){
+    scanf("%s",str);
+    printf("\n%d",evaluate());
+}

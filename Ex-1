@@ -1,0 +1,130 @@
+PRASANNA R 231701039
+
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *link;
+}*first=NULL;
+void start(int a)
+{
+    struct node *newnode=(struct node *)malloc(sizeof(struct node));
+    newnode->data=a;
+    newnode->link=first;
+    first=newnode;
+}
+void end(int b)
+{
+    struct node *newnode=(struct node *)malloc(sizeof(struct node)),*temp=first;
+    newnode->data=b;
+    if(temp==NULL)
+    {
+        start(b);
+    }
+    else
+    {
+        while(temp->link!=NULL)
+        {
+            temp=temp->link;
+        }
+        newnode->link=NULL;
+        temp->link=newnode;
+    }
+}
+void middle(int c,int pos)
+{
+    struct node *temp=first,*newnode=(struct node *)malloc(sizeof(struct node));
+    newnode->data=c;
+    if(temp==NULL||pos==1)
+    {
+        start(c);
+    }
+    else
+    {
+        for(int i=0;i<pos-2;i++)
+        {
+            temp=temp->link;
+            if(temp==NULL)
+            {
+                printf("Invalid Position\n");
+                exit(0);
+            }
+        }
+        newnode->link=temp->link;
+        temp->link=newnode;
+    }
+}
+void delpos(int d)
+{
+    struct node *temp=first,*next=NULL;
+    if(d==1){
+        first=first->link;
+        free(temp);
+    }
+    else{
+        for(int i=0;i<d-2;i++){
+            temp=temp->link;
+            if(temp==NULL){
+                printf("Invalid position\n");
+                exit(0);
+            }
+        }
+        next=temp->link;
+        temp->link=next->link;
+        free(next);
+    }
+}
+void deldat(int e)
+{
+    struct node *temp=first,*next=NULL;
+    if(first->data==e){
+        first=first->link;
+        free(temp);
+    }
+    else{
+            while(temp->data!=e){
+                temp=temp->link;
+                if(temp==NULL){
+                    printf("Invalid data\n");
+                    exit(0);
+                }
+            }
+            next=temp->link;
+            temp->link=next->link;
+            free(next);
+    }
+}
+void display()
+{
+    struct node *temp=first;
+    while(temp!=NULL)
+    {
+        printf("%d\n",temp->data);
+        temp=temp->link;
+    }
+}
+int count()
+{
+    int c=0;
+    struct node *temp=first;
+    while(temp!=NULL)
+    {
+        c++;
+        temp=temp->link;
+    }
+    return c;
+}
+int main()
+{
+    end(101);
+    start(100);
+    end(102);
+    end(105);
+    middle(99,1);
+    middle(103,5);
+    delpos(6);
+    deldat(99);
+    display();
+    printf("Count : %d",count());
+}

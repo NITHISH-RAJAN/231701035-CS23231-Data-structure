@@ -1,0 +1,177 @@
+PRASANNA R 231701039
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct node{
+    int coef;
+    int pow;
+    struct node *link;
+}*poly1,*poly2,*sum,*sub,*multi;
+void createpoly(struct node *list){
+    struct node *New=(struct node *)malloc(sizeof(struct node));
+    scanf("%d",&New->coef);
+    scanf("%d",&New->pow);
+    New->link=NULL;
+    while(list->link!=NULL){
+        list=list->link;
+    }
+    list->link=New;
+}
+void add(struct node *list1,struct node *list2){
+    struct node *temp=sum;
+    while(list1!=NULL&&list2!=NULL){
+        struct node *New=(struct node *)malloc(sizeof(struct node));
+        if(list1->pow==list2->pow){
+            New->coef=list1->coef+list2->coef;
+            New->pow=list1->pow;
+            New->link=NULL;
+            temp->link=New;
+            temp=temp->link;
+            list1=list1->link;
+            list2=list2->link;
+        }else if(list1->pow>list2->pow){
+            New->pow=list1->pow;
+            New->coef=list1->coef;
+            New->link=NULL;
+            list1=list1->link;
+            temp->link=New;
+            temp=temp->link;
+        }else if(list1->pow<list2->pow){
+            New->pow=list2->pow;
+            New->coef=list2->coef;
+            New->link=NULL;
+            list2=list2->link;
+            temp->link=New;
+            temp=temp->link;
+        }
+    }
+    while(list1!=NULL||list2!=NULL){
+            struct node *New=(struct node *)malloc(sizeof(struct node));
+        if(list1!=NULL){
+            New->pow=list1->pow;
+            New->coef=list1->coef;
+            New->link=NULL;
+            list1=list1->link;
+            temp->link=New;
+            temp=temp->link;
+        }else if(list2!=NULL){
+            New->pow=list2->pow;
+            New->coef=list2->coef;
+            New->link=NULL;
+            list2=list2->link;
+            temp->link=New;
+            temp=temp->link;
+        }
+    }
+}
+void subtract(struct node *list1,struct node *list2){
+    struct node *temp=sub;
+    while(list1!=NULL&&list2!=NULL){
+        struct node *New=(struct node *)malloc(sizeof(struct node));
+        if(list1->pow==list2->pow){
+            New->coef=list1->coef-list2->coef;
+            New->pow=list1->pow;
+            New->link=NULL;
+            temp->link=New;
+            temp=temp->link;
+            list1=list1->link;
+            list2=list2->link;
+        }else if(list1->pow>list2->pow){
+            New->pow=list1->pow;
+            New->coef=list1->coef;
+            New->link=NULL;
+            list1=list1->link;
+            temp->link=New;
+            temp=temp->link;
+        }else if(list1->pow<list2->pow){
+            New->pow=list2->pow;
+            New->coef=-1*(list2->coef);
+            New->link=NULL;
+            list2=list2->link;
+            temp->link=New;
+            temp=temp->link;
+        }
+    }
+    while(list1!=NULL||list2!=NULL){
+            struct node *New=(struct node *)malloc(sizeof(struct node));
+        if(list1!=NULL){
+            New->pow=list1->pow;
+            New->coef=list1->coef;
+            New->link=NULL;
+            list1=list1->link;
+            temp->link=New;
+            temp=temp->link;
+        }else if(list2!=NULL){
+            New->pow=list2->pow;
+            New->coef=-1*(list2->coef);
+            New->link=NULL;
+            list2=list2->link;
+            temp->link=New;
+            temp=temp->link;
+        }
+    }
+}
+void multiply(struct node *list1,struct node *list2){
+    struct node *temp=multi;
+    struct node *ptr1=list1,*ptr2=list2;
+    while(ptr1!=NULL){
+        while(ptr2!=NULL){
+            struct node *New=(struct node *)malloc(sizeof(struct node));
+            New->coef=ptr1->coef*ptr2->coef;
+            New->pow=ptr1->pow+ptr2->pow;
+            New->link=NULL;
+            temp->link=New;
+            temp=temp->link;
+            ptr2=ptr2->link;
+        }
+        ptr2=list2;
+        ptr1=ptr1->link;
+    }
+    removedup(multi);
+}
+void removedup(struct node *list){
+    struct node *ptr1=list,*ptr2,*dup;
+    while(ptr1->link!=NULL){
+        ptr2=ptr1;
+        while(ptr2->link!=NULL){
+            if(ptr1->pow==ptr2->link->pow){
+                ptr1->coef=ptr1->coef+ptr2->link->coef;
+                dup=ptr2->link;
+                ptr2->link=ptr2->link->link;
+                free(dup);
+            }else{ptr2=ptr2->link;}
+        }
+        ptr1=ptr1->link;
+    }
+}
+void display(struct node *list){
+    list=list->link;
+    while(list!=NULL){
+        printf("%dx^%d",list->coef,list->pow);
+        list=list->link;
+        if(list!=NULL){printf("+");}
+    }printf("\n");
+}
+int main(){
+    poly1=(struct node *)malloc(sizeof(struct node));
+    poly1->link=NULL;
+    poly2=(struct node *)malloc(sizeof(struct node));
+    poly2->link=NULL;
+    sum=(struct node *)malloc(sizeof(struct node));
+    sum->link=NULL;
+    sub=(struct node *)malloc(sizeof(struct node));
+    sub->link=NULL;
+    multi=(struct node *)malloc(sizeof(struct node));
+    multi->link=NULL;
+    createpoly(poly1);
+    createpoly(poly1);
+    createpoly(poly2);
+    createpoly(poly2);
+    add(poly1->link,poly2->link);
+    display(sum);
+    subtract(poly1->link,poly2->link);
+    display(sub);
+    multiply(poly1->link,poly2->link);
+    display(multi);
+}
